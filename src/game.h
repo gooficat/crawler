@@ -14,16 +14,23 @@ enum attack_type
 
 enum character_type
 {
-#define C(name, hp, damage_multiplier, ...) character_##name,
+#define C(name, hp, damage_multiplier, desc, ...) character_##name,
 #include "characters.h"
 #undef C
 };
 
 enum enemy_type
 {
-#define E(name, class, hp, damage_multiplier, ...) enemy_##name,
+#define E(name, class, hp, damage_multiplier, desc, ...) enemy_##name,
 #include "enemies.h"
 #undef E
+};
+
+enum item_type
+{
+#define I(name, class, weight, desc) item_##name,
+#include "items.h"
+#undef I
 };
 
 enum enemy_class
@@ -37,24 +44,44 @@ enum enemy_class
 struct status
 {
     unsigned short
-                blood,
-                energy,
-                hatred,
-                air;
+        blood,
+        energy,
+        hatred,
+        air;
+    bool fighting;
 };
 
 struct character
 {
-    unsigned long long id, uuid;
+    unsigned long id, uuid;
     enum character_type type;
     struct status status;
+    struct room *current_room;
 };
 
 struct enemy
 {
-    unsigned long long id, uuid;
+    unsigned long id, uuid;
     enum enemy_type type;
     struct status status;
 };
+
+struct item
+{
+    unsigned long id, uuid;
+    enum item_type type;
+};
+
+struct game_state
+{
+    struct character player;
+    struct
+    {
+        struct room *val;
+        unsigned long len;
+    } rooms;
+};
+
+extern struct game_state state;
 
 #endif

@@ -1,3 +1,5 @@
+CFLAGS := -g -O0 -Wall -Wextra -Wpedantic -Werror -Isrc -std=c23
+
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
@@ -7,15 +9,15 @@ OBJS := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 project := crawler
 
-target := $(BIN_DIR)/project
+target := $(BIN_DIR)/$(project)
 
 all: $(target)
 
 $(target): $(OBJS)
-	$(CC) -o $@ $<
+	$(CC) -o $@ $(OBJS) $(CFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) -c -o $@ $<
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 .PHONY: clean
 
